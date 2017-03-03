@@ -13,16 +13,23 @@ export default class Page extends App {
             modelData: null
         };
         this.setModelData = this.setModelData.bind(this);
-        this.handleSeatSelection=this.handleSeatSelection.bind(this);
+        this.handleSeatSelection = this.handleSeatSelection.bind(this);
     }
 
-    handleSeatSelection(seat){
-        if(seat || seat === 0){
-            const {modelData} = this.state;
-            if(modelData.seats[seat].status === "available")
-            modelData.seats[seat].status="selected"
+    handleSeatSelection(seat) {
+        if (seat || seat === 0) {
+            const { modelData } = this.state;
+            switch (modelData.seats[seat].status) {
+                case "available":
+                    modelData.seats[seat].status = "selected";
+                    break;
+                case "selected":
+                    modelData.seats[seat].status = "available";
+                    break;
+            }
+
             this.setState({ modelData })
-        }    	
+        }
     }
     setModelData(modelData) {
         this.setState({ modelData })
@@ -36,12 +43,12 @@ export default class Page extends App {
         const { modelData } = this.state;
         const handleSeatSelection = this.handleSeatSelection;
 
-        return ( 
-        	<div className = "main-container" >
-            	<Seats {...modelData} handleSeatSelection={handleSeatSelection} />				         		         
-            </div> 
+        return ( < div className = "main-container" >
+            < Seats {...modelData }
+            handleSeatSelection = { handleSeatSelection }
+            />                                        < /div >
         );
     }
 }
 
-render( <Page /> , document.getElementById("app"));
+render( < Page / > , document.getElementById("app"));
